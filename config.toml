@@ -1,0 +1,6 @@
+[http]
+listen_address = "127.0.0.1:8085"
+debug = true
+
+[logger]
+level = 4
