@@ -1,11 +1,16 @@
 package logger
 
 type Logger interface {
-	Error(data string)
-	Info(data string)
-	Warning(data string)
-	Debug(data string)
+	Error(data LoggingData)
+	Info(data LoggingData)
+	Warning(data LoggingData)
+	Debug(data LoggingData)
 	SetLogLevel(level uint) error
+}
+
+type LoggingData struct {
+	Badge string
+	Data  string
 }
 
 var instance Logger
@@ -15,8 +20,9 @@ func GetLogger() Logger {
 		return instance
 	}
 
-	instance = &ConsoleLogger{
-		logLevel: 0,
+	instance = &AbstractLogger{
+		level: 0,
+		impl:  &ConsoleLogger{}, // Current logger implementation
 	}
 
 	return instance

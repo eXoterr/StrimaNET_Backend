@@ -31,7 +31,9 @@ func (pgdb *PgDatabase) Connect() error {
 		return err
 	}
 
-	logger.GetLogger().Debug("connected to db")
+	logger.GetLogger().Debug(logger.LoggingData{
+		Data: "connected to db",
+	})
 
 	return nil
 }

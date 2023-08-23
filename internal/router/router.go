@@ -24,7 +24,9 @@ func (http *HTTPRouter) Listen() error {
 		return errors.New("listen address in empty")
 	}
 
-	log.Debug("running http server at " + http.ListenAddress)
+	log.Debug(logger.LoggingData{
+		Data: "running http server at " + http.ListenAddress,
+	})
 	err := http.instance.Run(http.ListenAddress)
 	return err
 }
@@ -42,10 +44,14 @@ func (http *HTTPRouter) Init(addr string, debug bool) error {
 
 	if debug { // Set "mode" for router (debug/release)
 		gin.SetMode(gin.DebugMode)
-		log.Warning("http server will run in debug mode")
+		log.Warning(logger.LoggingData{
+			Data: "http server will run in debug mode",
+		})
 	} else {
 		gin.SetMode(gin.ReleaseMode)
-		log.Debug("http server will run in release mode")
+		log.Debug(logger.LoggingData{
+			Data: "http server will run in release mode",
+		})
 	}
 
 	http.instance = gin.New() // Create router instance
