@@ -56,6 +56,8 @@ func (http *HTTPRouter) Init(addr string, debug bool) error {
 
 	http.instance = gin.New() // Create router instance
 
+	http.initHandlers() // Register http handlers
+
 	return nil
 }
 
