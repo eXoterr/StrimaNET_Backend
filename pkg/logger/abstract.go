@@ -2,16 +2,20 @@ package logger
 
 import (
 	"errors"
+	"io"
 )
 
 type AbstractLogger struct {
-	level uint
-	impl  LoggerImpl
+	level  uint
+	impl   LoggerImpl
+	output LoggerOutput
 }
 
 type LoggerImpl interface {
-	LogData(data LoggingData) error
+	LogData(data LoggingData, out LoggerOutput) error
 }
+
+type LoggerOutput io.Writer
 
 func (ll *AbstractLogger) Error(data LoggingData) {
 	if ll.level < 1 {
@@ -20,7 +24,7 @@ func (ll *AbstractLogger) Error(data LoggingData) {
 
 	data.Badge = "ERROR"
 
-	ll.impl.LogData(data)
+	ll.impl.LogData(data, ll.output)
 }
 
 func (ll *AbstractLogger) Info(data LoggingData) {
@@ -30,7 +34,7 @@ func (ll *AbstractLogger) Info(data LoggingData) {
 
 	data.Badge = "INFO"
 
-	ll.impl.LogData(data)
+	ll.impl.LogData(data, ll.output)
 }
 
 func (ll *AbstractLogger) Warning(data LoggingData) {
@@ -40,7 +44,7 @@ func (ll *AbstractLogger) Warning(data LoggingData) {
 
 	data.Badge = "WARNING"
 
-	ll.impl.LogData(data)
+	ll.impl.LogData(data, ll.output)
 }
 
 func (ll *AbstractLogger) Debug(data LoggingData) {
@@ -50,7 +54,7 @@ func (ll *AbstractLogger) Debug(data LoggingData) {
 
 	data.Badge = "DEBUG"
 
-	ll.impl.LogData(data)
+	ll.impl.LogData(data, ll.output)
 }
 
 func (ll *AbstractLogger) SetLogLevel(level uint) error {

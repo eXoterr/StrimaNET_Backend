@@ -2,7 +2,6 @@ package logger
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 )
 
@@ -15,7 +14,7 @@ type jsonLog struct {
 	MsgType string `json:"type"`
 }
 
-func (jl *JSONLogger) LogData(data LoggingData) error {
+func (jl *JSONLogger) LogData(data LoggingData, output LoggerOutput) error {
 
 	formattedData, e := jl.fmtLog(data)
 
@@ -23,7 +22,11 @@ func (jl *JSONLogger) LogData(data LoggingData) error {
 		return e
 	}
 
-	fmt.Println(formattedData)
+	_, err := output.Write([]byte(formattedData))
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
