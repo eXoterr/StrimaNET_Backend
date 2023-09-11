@@ -1,11 +1,9 @@
 package app
 
-import (
-	"github.com/eXoterr/StrimaNET_Backend/internal/database"
-)
+import "github.com/eXoterr/StrimaNET_Backend/internal/store"
 
 func (app *App) initDatabase() error {
-	app.database = database.New()
+	app.database = store.New()
 	err := app.database.Configure()
 
 	return err

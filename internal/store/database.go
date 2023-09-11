@@ -1,10 +1,11 @@
-package database
+package store
 
 import (
 	"errors"
 	"fmt"
 	"os"
 
+	"github.com/eXoterr/StrimaNET_Backend/internal/store/postgres/user"
 	"github.com/eXoterr/StrimaNET_Backend/pkg/logger"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
@@ -13,6 +14,8 @@ import (
 type Database interface {
 	Configure() error
 	Connect() error
+
+	User() user.UserStore
 }
 
 type PgDatabase struct {
@@ -34,6 +37,8 @@ func (pgdb *PgDatabase) Connect() error {
 	logger.GetLogger().Debug(logger.LoggingData{
 		Data: "connected to db",
 	})
+
+	pgdb.DB = db
 
 	return nil
 }
@@ -75,8 +80,4 @@ func (pgdb *PgDatabase) Configure() error {
 	pgdb.connString = connString
 
 	return nil
-}
-
-func New() Database {
-	return &PgDatabase{DB: nil}
 }

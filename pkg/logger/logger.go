@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/eXoterr/StrimaNET_Backend/pkg/logger/output/console"
-	"github.com/eXoterr/StrimaNET_Backend/pkg/logger/output/file"
 )
 
 type Logger interface {
@@ -45,7 +44,7 @@ func GetLogger() Logger {
 }
 
 func initLoggerOutput() (LoggerOutput, error) {
-	out, err := file.New() // Current output implementation
+	out, err := console.New() // Current output implementation
 	if err != nil {
 		return nil, err
 	}
